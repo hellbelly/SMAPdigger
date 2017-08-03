@@ -330,11 +330,11 @@ sub chk_disk{
 sub chk_mem{
 	my $chkHeader = $_[0];
 	my $time = 0;
-	my ($avail,$free_info,@free_info_array);
+	my ($avail,$free_info,@free_info_array,@mem_array);
 	
 	FREE: 
 	{
-		$free_info = `free`;
+		$free_info = `free -m`;
 		$time++;
 		
 		if($chkHeader == 1) {
@@ -345,16 +345,14 @@ sub chk_mem{
 		
 		@free_info_array = split(/\n+/,$free_info);
 		shift @free_info_array;	# Remove header
-		$free_info = join('', @free_info_array);		
-		$free_info =~ s/^\s+//g;
-		$free_info =~ s/\s+$//g;
-		$avail = (split /\s+/,$free_info)[6];
-
-		if($avail !~ /\d/) {
+		@mem_array = split(/\s+/,$free_info_array[0]);
+		if($mem_array[1] !~ /\d/ || $mem_array[2] !~ /\d/ ) {
 			die "Cannot get the avail space info of memory!\n" if($time == 3);
 			redo FREE;
 		}
+		$avail = $mem_array[1] - $mem_array[2];
 	}
+	$avail .= "M";
 	return $avail;
 }
 
