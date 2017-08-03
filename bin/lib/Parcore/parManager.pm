@@ -348,7 +348,7 @@ sub chk_mem{
 		$free_info = join('', @free_info_array);		
 		$free_info =~ s/^\s+//g;
 		$free_info =~ s/\s+$//g;
-		$avail = (split /\s+/,$free_info)[3];
+		$avail = (split /\s+/,$free_info)[6];
 
 		if($avail !~ /\d/) {
 			die "Cannot get the avail space info of memory!\n" if($time == 3);
