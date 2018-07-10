@@ -197,9 +197,9 @@ sub parmanager {
 			# Submit task on SGE 
 			my $SGELOG;
 			open $SGELOG,">$logDir/step$i.log";
-			print $SGELOG "qsub -o $logDir -e $logDir -q $sgequeue -P $sgeproj -l vf=$memsz $logDir/step$i.sh";
+			print $SGELOG "qsub -o $logDir -e $logDir -q $sgequeue -P $sgeproj -l vf=$memsz num_proc=$nthread $logDir/step$i.sh";
 			close $SGELOG;
-			system("qsub -o $logDir -e $logDir -q $sgequeue -P $sgeproj -l vf=$memsz $logDir/step$i.sh");
+			system("qsub -o $logDir -e $logDir -q $sgequeue -P $sgeproj -l vf=$memsz num_proc=$nthread $logDir/step$i.sh");
 		}
 		elsif($mode eq 'slurm') {
 			# Convert mem size to MB
